@@ -7,7 +7,7 @@ Unlike `zsh-autosuggestions` which only replays history, `zsh-next` learns your 
 ---
 
 ## Demo
-*GIF coming soon*
+![zsh-next demo](demo.gif)
 
 ---
 
