@@ -22,13 +22,17 @@ _zsh_next_keypress() {
 }
 zle -N _zsh_next_keypress
 
-for key in {a..z} {A..Z} {0..9}; do
-    bindkey "$key" _zsh_next_keypress
-done
-bindkey ' ' _zsh_next_keypress
-bindkey '/' _zsh_next_keypress
-bindkey '_' _zsh_next_keypress
-bindkey '.' _zsh_next_keypress
+if [[ -o zle ]]; then
+    for key in {a..z} {A..Z} {0..9}; do
+        bindkey "$key" _zsh_next_keypress
+    done
+    bindkey ' ' _zsh_next_keypress
+    bindkey '/' _zsh_next_keypress
+    bindkey '_' _zsh_next_keypress
+    bindkey '.' _zsh_next_keypress
+    bindkey "^[[C" _zsh_next_accept
+    bindkey "^M" _zsh_next_clear
+fi
 
 _zsh_next_accept() {
     BUFFER="${BUFFER} && ${POSTDISPLAY}"
