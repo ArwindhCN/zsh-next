@@ -31,13 +31,23 @@ def build_bigram_table(commands):
     return table
 
 def predict(current_cmd, table):
-    if current_cmd not in table or not table[current_cmd]:
-        return None 
-        
-    possibilities = table[current_cmd]
+    if not current_cmd.strip():
+        return None
+
+    # find all keys that start with what the user typed
+    matches = [cmd for cmd in table if cmd.startswith(current_cmd)]
     
-    best_prediction = max(possibilities, key=possibilities.get)
-    return best_prediction
+    if not matches:
+        return None
+    
+    # merge all next-command counts across matching keys
+    combined = defaultdict(int)
+    for cmd in matches:
+        for next_cmd, count in table[cmd].items():
+            combined[next_cmd] += count
+    
+    # return the most frequent next command
+    return max(combined, key=combined.get)
 
 if __name__ == "__main__":
     # sys.argv[1] is the command zsh passes in
