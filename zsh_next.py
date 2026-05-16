@@ -3,16 +3,21 @@ from pathlib import Path
 from collections import defaultdict
 
 def load_history():
-    
     history_file = Path.home() / ".zsh_history"
     
     commands = []
     
     with open(history_file, "r", errors="ignore") as f:
         for line in f:
-            if ";" in line:
+            line = line.strip()
+            if not line:
+                continue
+            if ";" in line and line.startswith(":"):
                 cmd = line.split(";", 1)[1].strip()
-                commands.append(cmd)
+            else:
+                cmd = line
+            
+            commands.append(cmd)
     
     return commands
 def build_bigram_table(commands):
